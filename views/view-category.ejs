@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Fonts -->
+  <%- include("stylesheet") %>
+</head>
+
+<body>
+  <div id="login">
+    <%- include('header') %>
+    <div class="container mt-5 card p-5">
+      <div class="row">
+        <div class="col-md-9">
+          <h5>View Category</h5>
+          <p>All Category details for the current user</p>
+        </div>
+        <div class="col-md-3 text-right">
+          <a href="/category" class="btn btn-primary">Add More Category</a>
+        </div>
+
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Created Time</th>
+            <th>Category Name</th>
+            <th>Project Name</th>
+            <th>Password Details</th>
+            <th>Action</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <% records.forEach(function(user){ %>
+          <tr>
+            <td>
+                <input type="checkbox" class="form-check-input mr-2 inputId" name="idValue" value="<%= user._id %>">
+              <%= user.date %> 
+              <small class="text-danger"> <%=user.lastEdit %></small></td>
+            <td><%= user.categoryName %></td>
+            <td><%= user.projectName %></td>
+            <td><%= user.passwordDetails %></td>
+            <td>
+              <a href="/category/edit/<%= user._id%>" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+              <a onclick="return ConfirmDelete()" href="/category/delete/<%= user._id%>"
+                class="btn btn-danger"><i class="fa fa-trash"></i></a>
+            </td>
+
+          </tr>
+          <% }) %>
+          <% if (records.length == 0) { %>
+          <tr>
+            <td class="text-center" colspan="4"><strong>No data found in your database</strong></td>
+          </tr>
+          <tr>
+            <td class="text-center border-top-0" colspan="4"><a href="/category" class="btn btn-primary">Add
+                Category</a></td>
+          </tr>
+          <% } %>
+
+        </tbody>
+      </table>
+      <nav class="mt-5 btm">
+        <% if (count > 1) { %>
+            <ul class="pagination">
+              <li class="page-item <% if(currentPage==1){%>disabled<%}else{%><%}%>">
+                <a class="page-link" href="/view-category/<%= Number(currentPage)-1 %>">Previous</a>
+              </li>
+              
+              <% for (var i=1; i<=count; i++) { %> 
+                <li class="page-item <% if(currentPage==i){%>active<%}else{%><%}%>"><a class="page-link" href="/view-category/<%= i %>"><%= i %></a></li>
+              <%}%>
+
+              <li class="page-item <% if(currentPage==count){%>disabled<%}else{%><%}%>">
+                <a class="page-link" href="/view-category/<%= Number(currentPage)+1 %>">Next</a>
+              </li>
+            </ul>
+        <% } %>
+        <!-- <button type="button" class="btn btn-primary deleteMultiple" value="" name="delmul">Delete Selected</button> -->
+        <a href="" class="btn btn-danger deleteMultiple">Delete Selected</a>
+      </nav>
+    </div>
+  </div>
+
+  
+</body>
+<script>
+  function ConfirmDelete() {
+    var x = confirm("Are you sure you want to delete?");
+    if (x)
+      return true;
+    else
+      return false;
+  }    
+  /* $(document).ready(function(){
+    var array = [];
+    $(".inputId").click(function(){
+      if($(this).prop("checked")==true){
+        var idValue = $(this).val();
+        array.push(idValue);
+        $(".deleteMultiple").attr("href", "/view-category/"+array);
+        console.log(array);
+      }
+    })
+}) */
+</script>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Fonts -->
+    <%- include('stylesheet') %>
+</head>
+<body>
+
+    <div id="login">
+        <%- include('header') %>
+        <h3 class="text-center text-white pt-5">Add Category</h3>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/add-category" method="post">
+                            <% if(msg!=""){ %>
+                                <div class="alert alert-danger">
+                                    <%= msg %>
+                                  </div>
+                            <% } %>
+                            <input type="hidden" name="hiddenUser" value="<%= user %>">
+                            <div class="form-group">
+                                <label for="categoryName" class="text-info">Category Name:</label><br>
+                                <input type="text" name="categoryName" id="categoryName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="projectName" class="text-info">Project Name:</label><br>
+                                <input type="text" name="projectName" id="projectName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="passwordDetails" class="text-info">Password Details:</label><br>
+                                <input type="text" name="passwordDetails" id="passwordDetails" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Add Category">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

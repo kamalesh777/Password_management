@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+#login{
+  background-color: #17a2b8;
+  height: 100vw;
+}
+#login .container #login-row #login-column #login-box {
+  margin-top: 20px;
+  max-width: 600px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+  margin-bottom: 30px;
+}
+#login .container #login-row #login-column #login-box #login-form {
+  padding: 20px;
+}
+#login .container #login-row #login-column #login-box #login-form #register-link {
+  margin-top: -85px;
+}
+.text-info {
+  color: #484848!important;
+  font-weight: 500;
+}
+.alert {
+  padding: 0.5rem 1.25rem;
+}
+.w-20{
+  max-width: 50px;
+}
+nav.btm {
+  display: flex;
+  justify-content: space-between;
+}
+.deleteMultiple {
+  line-height: 1;
+  padding: 0.8rem 1rem;
+  height: max-content;
+}
