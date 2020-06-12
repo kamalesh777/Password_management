@@ -1,2 +1,1 @@
-# Password_management
-Password management in node.js
+# Password_management in node.js
