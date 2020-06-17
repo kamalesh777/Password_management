@@ -24,71 +24,82 @@
         </div>
 
       </div>
+      <form action="/delete-multiple" method="POST" id="viewForm">
+        <input type="hidden" name="idVal" id="getId" value="">
+        <table class="table">
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Created Time</th>
-            <th>Category Name</th>
-            <th>Project Name</th>
-            <th>Password Details</th>
-            <th>Action</th>
+          <thead>
+            <tr>
+              <th>Created Time</th>
+              <th>Category Name</th>
+              <th>Project Name</th>
+              <th>Password Details</th>
+              <th>Action</th>
 
-          </tr>
-        </thead>
-        <tbody>
-          <% records.forEach(function(user){ %>
-          <tr>
-            <td>
-                <input type="checkbox" class="form-check-input mr-2 inputId" name="idValue" value="<%= user._id %>">
-              <%= user.date %> 
-              <small class="text-danger"> <%=user.lastEdit %></small></td>
-            <td><%= user.categoryName %></td>
-            <td><%= user.projectName %></td>
-            <td><%= user.passwordDetails %></td>
-            <td>
-              <a href="/category/edit/<%= user._id%>" class="btn btn-primary"><i class="fa fa-edit"></i></a>
-              <a onclick="return ConfirmDelete()" href="/category/delete/<%= user._id%>"
-                class="btn btn-danger"><i class="fa fa-trash"></i></a>
-            </td>
+            </tr>
+          </thead>
+          <tbody>
 
-          </tr>
-          <% }) %>
-          <% if (records.length == 0) { %>
-          <tr>
-            <td class="text-center" colspan="4"><strong>No data found in your database</strong></td>
-          </tr>
-          <tr>
-            <td class="text-center border-top-0" colspan="4"><a href="/category" class="btn btn-primary">Add
-                Category</a></td>
-          </tr>
-          <% } %>
+            <% records.forEach(function(user){ %>
+            <tr>
+              <td>
+                <form action="/select-to-delete" method="POST">
+                  <input type="checkbox" class="form-check-input mr-2 inputId" onclick="checkboxCheck(event, this.form)"
+                    name="idValue" value="<%= user._id %>">
+                  <input type="hidden" name="hiddenIdValue" value="">
+                </form>
+                <%= user.date %>
+                <small class="text-danger"> <%=user.lastEdit %></small>
+              </td>
+              <td><%= user.categoryName %></td>
+              <td><%= user.projectName %></td>
+              <td><%= user.passwordDetails %></td>
+              <td>
+                <a href="/category/edit/<%= user._id%>" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                <a onclick="return ConfirmDelete()" href="/category/delete/<%= user._id%>" class="btn btn-danger"><i
+                    class="fa fa-trash"></i></a>
+              </td>
 
-        </tbody>
-      </table>
-      <nav class="mt-5 btm">
-        <% if (count > 1) { %>
-            <ul class="pagination">
-              <li class="page-item <% if(currentPage==1){%>disabled<%}else{%><%}%>">
+            </tr>
+            <% }) %>
+            <% if (records.length == 0) { %>
+            <tr>
+              <td class="text-center" colspan="4"><strong>No data found in your database</strong></td>
+            </tr>
+            <tr>
+              <td class="text-center border-top-0" colspan="4"><a href="/category" class="btn btn-primary">Add
+                  Category</a></td>
+            </tr>
+            <% } %>
+
+          </tbody>
+        </table>
+        <nav class="mt-5 btm">
+          <% if (count > 1) { %>
+          <ul class="pagination">
+            <li class="page-item <% if(currentPage==1){%>disabled<%}else{%><%}%>">
                 <a class="page-link" href="/view-category/<%= Number(currentPage)-1 %>">Previous</a>
-              </li>
-              
-              <% for (var i=1; i<=count; i++) { %> 
-                <li class="page-item <% if(currentPage==i){%>active<%}else{%><%}%>"><a class="page-link" href="/view-category/<%= i %>"><%= i %></a></li>
-              <%}%>
+            </li>
+
+            <% for (var i=1; i<=count; i++) { %>
+            <li
+              class="page-item <% if(currentPage==i){%>active<%}else{%><%}%>"><a class="page-link" href="/view-category/<%= i %>">
+              <%= i %></a></li>
+            <%}%>
 
               <li class="page-item <% if(currentPage==count){%>disabled<%}else{%><%}%>">
                 <a class="page-link" href="/view-category/<%= Number(currentPage)+1 %>">Next</a>
-              </li>
-            </ul>
-        <% } %>
-        <!-- <button type="button" class="btn btn-primary deleteMultiple" value="" name="delmul">Delete Selected</button> -->
-        <a href="" class="btn btn-danger deleteMultiple">Delete Selected</a>
-      </nav>
+            </li>
+          </ul>
+          <% } %>
+          <button type="submit" class="btn btn-primary deleteMultiple" value="" name="delmul">Delete Selected</button>
+          <!-- <a href="/deleteSelected" class="btn btn-danger deleteMultiple">Delete Selected</a> -->
+        </nav>
+      </form>
     </div>
   </div>
 
-  
+
 </body>
 <script>
   function ConfirmDelete() {
@@ -97,17 +108,43 @@
       return true;
     else
       return false;
-  }    
-  /* $(document).ready(function(){
-    var array = [];
+  }
+  //var checkbox = document.querySelectorAll(".inputId");
+  function checkboxCheck(event, form) {
+    /*let formValue1 = form.elements.item(0).value;
+    if (event.target.checked) {
+      form.elements.item(1).value = formValue1;
+      //form.submit();
+    } else {
+      form.elements.item(1).value = '';
+      form.reset();
+    }*/
+  }
+  var allHiddenbValue = [];
+    
     $(".inputId").click(function(){
-      if($(this).prop("checked")==true){
-        var idValue = $(this).val();
-        array.push(idValue);
-        $(".deleteMultiple").attr("href", "/view-category/"+array);
-        console.log(array);
+      var hValue = $(this).val();
+
+      if ($(this).prop('checked')==true){
+        allHiddenbValue.push(hValue);
+      } else {
+
+        for (x in allHiddenbValue){
+          var y = allHiddenbValue[x];
+          allHiddenbValue.slice(x, 1);
+        }
+        for (var i = allHiddenbValue.length-1; i>= 0; i--){
+          if (allHiddenbValue[i] === hValue) {
+            allHiddenbValue.splice(i, 1);
+          }
+        }
       }
+      //console.log(allHiddenbValue)
+      $("#viewForm #getId").val(allHiddenbValue);
+      $(".deleteMultiple").submit();
     })
-}) */
+    
+    
 </script>
+
 </html>
