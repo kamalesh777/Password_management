@@ -280,6 +280,8 @@ router.post('/category/edit/:id', [
     });
 })
 
+// Single category delete method
+
 router.get("/category/delete/:id", (req, res) => {
   var delId = req.params.id;
 
@@ -288,6 +290,23 @@ router.get("/category/delete/:id", (req, res) => {
     res.redirect("/view-category");
   })
 })
+
+//get Id from checkbox
+
+router.get("/delete-multiple", (req, res) => {
+  res.redirect("/view-category");
+})
+router.post("/delete-multiple", (req, res) => {
+  var allId = req.body.idVal;
+  let _idArray = allId.split(",")
+
+  categoryModel.deleteMany({_id: {$in: _idArray}}, function(err, data){
+    if (err) throw err;
+    console.log(data)
+    res.redirect("/view-category");
+  })
+})
+
 
 // Logout get method 
 router.get('/logout', function (req, res, next) {
