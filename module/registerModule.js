@@ -1,24 +1,20 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://kammo:kammo120@productservice-ci6mm.mongodb.net/project1', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
-
+const passportLocalMongoose = require('passport-local-mongoose');
 var db = mongoose.connection;
 var registerSchema = new mongoose.Schema({
-    fullName: {
+    fullname: {
         type: String,
         required: true,
         index: true
     },
     email: {
         type: String,
-        required: true,
-        index: true
     },
     password: {
         type: String,
-        required: true,
-        index: true
     },
-    userName: {
+    username: {
         type: String,
         required: true,
         index: true
@@ -34,7 +30,7 @@ var registerSchema = new mongoose.Schema({
     }
 
 });
-
+registerSchema.plugin(passportLocalMongoose);
 var registerModel = mongoose.model("account", registerSchema);
 
 module.exports = registerModel;
