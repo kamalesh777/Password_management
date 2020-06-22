@@ -13,20 +13,22 @@
 <body>
   <div id="login">
     <%- include('header') %>
-    <div class="container mt-5 card p-5">
+    <div class="container mt-5 card p-md-5 py-5">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-7">
           <h5>View Category</h5>
           <p>All Category details for the current user</p>
         </div>
-        <div class="col-md-3 text-right">
+        <div class="col-md-5 text-md-right">
+          <button type="submit" class="btn btn-danger deleteMultiple mr-2" value="" name="delmul">Delete Selected</button>
           <a href="/category" class="btn btn-primary">Add More Category</a>
         </div>
 
       </div>
       <form action="/delete-multiple" method="POST" id="viewForm">
         <input type="hidden" name="idVal" id="getId" value="">
-        <table class="table">
+        <input type="hidden" name="checkCount" id="checkedCount" value="">
+        <table class="table d-md-table table-responsive">
 
           <thead>
             <tr>
@@ -44,8 +46,7 @@
             <tr>
               <td>
                 <form action="/select-to-delete" method="POST">
-                  <input type="checkbox" class="form-check-input mr-2 inputId" onclick="checkboxCheck(event, this.form)"
-                    name="idValue" value="<%= user._id %>">
+                  <input type="checkbox" class="form-check-input mr-2 inputId" name="idValue" value="<%= user._id %>">
                   <input type="hidden" name="hiddenIdValue" value="">
                 </form>
                 <%= user.date %>
@@ -71,11 +72,10 @@
                   Category</a></td>
             </tr>
             <% } %>
-
           </tbody>
         </table>
+        <% if (count > 1) { %>
         <nav class="mt-5 btm">
-          <% if (count > 1) { %>
           <ul class="pagination">
             <li class="page-item <% if(currentPage==1){%>disabled<%}else{%><%}%>">
                 <a class="page-link" href="/view-category/<%= Number(currentPage)-1 %>">Previous</a>
@@ -92,8 +92,10 @@
             </li>
           </ul>
           <% } %>
-          <button type="submit" class="btn btn-primary deleteMultiple" value="" name="delmul">Delete Selected</button>
-          <!-- <a href="/deleteSelected" class="btn btn-danger deleteMultiple">Delete Selected</a> -->
+
+
+          
+
         </nav>
       </form>
     </div>
@@ -109,42 +111,38 @@
     else
       return false;
   }
-  //var checkbox = document.querySelectorAll(".inputId");
-  function checkboxCheck(event, form) {
-    /*let formValue1 = form.elements.item(0).value;
-    if (event.target.checked) {
-      form.elements.item(1).value = formValue1;
-      //form.submit();
-    } else {
-      form.elements.item(1).value = '';
-      form.reset();
-    }*/
-  }
+
   var allHiddenbValue = [];
-    
-    $(".inputId").click(function(){
-      var hValue = $(this).val();
+  if (allHiddenbValue.length == 0) {
+    $('.deleteMultiple').hide();
+  }
+  $(".inputId").click(function () {
+    var hValue = $(this).val();
+    if ($(this).prop('checked') == true) {
+      allHiddenbValue.push(hValue);
+    } else {
 
-      if ($(this).prop('checked')==true){
-        allHiddenbValue.push(hValue);
-      } else {
-
-        for (x in allHiddenbValue){
-          var y = allHiddenbValue[x];
-          allHiddenbValue.slice(x, 1);
-        }
-        for (var i = allHiddenbValue.length-1; i>= 0; i--){
-          if (allHiddenbValue[i] === hValue) {
-            allHiddenbValue.splice(i, 1);
-          }
+      for (x in allHiddenbValue) {
+        var y = allHiddenbValue[x];
+        allHiddenbValue.slice(x, 1);
+      }
+      for (var i = allHiddenbValue.length - 1; i >= 0; i--) {
+        if (allHiddenbValue[i] === hValue) {
+          allHiddenbValue.splice(i, 1);
         }
       }
-      //console.log(allHiddenbValue)
-      $("#viewForm #getId").val(allHiddenbValue);
-      $(".deleteMultiple").submit();
-    })
-    
-    
+    }
+    //console.log(allHiddenbValue)
+    var getIdVal = $("#viewForm #getId").val(allHiddenbValue);
+    if (allHiddenbValue.length >= 2) {
+      $(".deleteMultiple").show();
+    } else {
+      $(".deleteMultiple").hide();
+    }
+    $(".deleteMultiple").submit();
+  })
+
+
 </script>
 
 </html>

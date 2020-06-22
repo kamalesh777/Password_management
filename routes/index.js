@@ -174,16 +174,17 @@ router.get("/view-category", function (req, res) {
   if (req.isAuthenticated()) {
     var sessionUser = req.session.passport;
     var getUserName = sessionUser.user;
+    
     var page = 1;
     var perPageItem = 4;
     var categoryFind = categoryModel.find({ userId: getUserName });
-
+    
     categoryFind.skip((perPageItem * page) - perPageItem).limit(perPageItem).exec(function (err, result) {
       if (err) throw err;
       categoryModel.find({ userId: getUserName }).countDocuments({}).exec(function (err, count) {
         if (err) throw err;
         // console.log(Math.ceil(count/perPageItem));
-        res.render("view-category", { records: result, user: getUserName, count: Math.ceil(count / perPageItem), currentPage: page });
+        res.render("view-category", { records: result, user: getUserName, count: Math.ceil(count / perPageItem), currentPage: page});
       })
 
     })
@@ -294,11 +295,11 @@ router.get("/delete-multiple", (req, res) => {
 })
 router.post("/delete-multiple", (req, res) => {
   var allId = req.body.idVal;
-  let _idArray = allId.split(",")
+  let _idArray = allId.split(",");
 
   categoryModel.deleteMany({ _id: { $in: _idArray } }, function (err, data) {
     if (err) throw err;
-    console.log(data)
+    // console.log(data)
     res.redirect("/view-category");
   })
 })
